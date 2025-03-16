@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCA Librería - Facturación Electrónica</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="js/main.js" defer></script>
+
+    <!-- Favicon y Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/icon/android-chrome-512x512.png">
+    <link rel="shortcut icon" href="/assets/icon/favicon.ico">
+</head>
+<body>
+   
+    <header>
+        <div class="container header-content">
+            <div class="menu-icon">
+                <img src="/assets/icon/favicon-32x32.png" alt="Logo de ARCA Librería">
+                <a href="#" class="logo">ARCA Librería</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Características</a></li>
+                    <li><a href="#getting-started">Comenzar</a></li>
+                    <li><a href="#documentation">Documentación</a></li>
+                    <li><a href="#examples">Ejemplos</a></li>
+                    <li><a href="#troubleshooting">Solución de Problemas</a></li>
+                </ul>
+            </nav>
+            <div class="nav-buttons">
+                <a href="https://apiworks.online/" class="btn-nav">
+                    Acceder
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Librería de Facturación Electrónica ARCA</h1>
+            <p>Interfaz simple y eficiente para la facturación electrónica y generación del CAE mediante los Web Services de ARCA, desarrollada en Visual FoxPro 9.</p>
+            <a href="#getting-started" class="btn">Comenzar ahora
+                <i class="fas fa-arrow-down"></i>
+            </a>
+        </div>
+    </section>
+    
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Características Principales</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Compatible con Visual FoxPro 9</h3>
+                    <p>Integración nativa con aplicaciones desarrolladas en Visual FoxPro 9, sin necesidad de middleware adicional.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Generación de CAE</h3>
+                    <p>Obtén el Código de Autorización Electrónica (CAE) directamente desde los servidores de ARCA de manera rápida y segura.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Facturación por Lotes</h3>
+                    <p>Procesa múltiples facturas en una sola operación, optimizando el rendimiento y reduciendo los tiempos de respuesta.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Gestión de Certificados</h3>
+                    <p>Manejo simplificado de certificados digitales para autenticación segura con los Web Services de ARCA.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Diagnóstico de Errores</h3>
+                    <p>Sistema integrado de diagnóstico y solución de problemas comunes en la facturación electrónica.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Expandible</h3>
+                    <p>Arquitectura diseñada para incorporar nuevas funcionalidades y métodos de forma sencilla.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="getting-started" class="documentation">
+        <div class="container">
+            <h2>Comenzando con ARCA Librería</h2>
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="installation">Instalación</button>
+                    <button class="tab-btn" data-tab="certificate">Generación de Certificados</button>
+                    <button class="tab-btn" data-tab="configuration">Configuración</button>
+                    <button class="tab-btn" data-tab="production">Puesta en Producción</button>
+                </div>
+                
+                <div id="installation" class="tab-content active">
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Descarga la librería</h4>
+                                <p>Descarga la última versión de la librería desde nuestra página de descargas.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Registra la librería DLL</h4>
+                                <p>Ejecuta el archivo registrar.exe como administrador para registrar la librería en el sistema.</p>
+                                <div class="code-block">
+                                    registrar.exe
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Verifica la instalación</h4>
+                                <p>Comprueba que la instalación ha sido exitosa mediante el siguiente código en Visual FoxPro:</p>
+                                <div class="code-block">
+                                    oWSFEV1 = CREATEOBJECT("FEAFIP.WSFEV1")<br>
+                                    IF TYPE("oWSFEV1") = "O"<br>
+                                    &nbsp;&nbsp;? "Instalación exitosa"<br>
+                                    ELSE<br>
+                                    &nbsp;&nbsp;? "Error en la instalación"<br>
+                                    ENDIF
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="certificate" class="tab-content">
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Descarga e instala OpenSSL</h4>
+                                <p>Descarga e instala OpenSSL desde <a href="https://slproweb.com/products/Win32OpenSSL.html" target="_blank">slproweb.com</a>.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Configuración de variables de entorno</h4>
+                                <p>Configura la variable de entorno para OpenSSL:</p>
+                                <div class="code-block">
+                                    set OPENSSL_CONF=[RUTA AL DIRECTORIO BIN DE OPENSSL]\openssl.cfg
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Generar archivo privada</h4>
+                                <p>Genera el archivo de clave privada:</p>
+                                <div class="code-block">
+                                    openssl genrsa -out privada 2048
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Copia de archivo privada</h4>
+                                <p>Copia el archivo "privada" como "clave.key" (no renombrar, hacer una copia).</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Generar archivo de solicitud CSR</h4>
+                                <p>Genera el archivo CSR para solicitar el certificado a ARCA:</p>
+                                <div class="code-block">
+                                    openssl req -new -key privada -subj "/C=AR/O=subj_o/CN=subj_cn/serialNumber=CUIT subj_cuit" -out pedido
+                                </div>
+                                <p>Reemplaza los siguientes valores:</p>
+                                <ul>
+                                    <li><strong>subj_o</strong>: Nombre de la Empresa que emitirá las facturas</li>
+                                    <li><strong>subj_cn</strong>: Un alias cualquiera</li>
+                                    <li><strong>subj_cuit</strong>: CUIT de la Empresa que emitirá las facturas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="configuration" class="tab-content">
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Incorporar la librería en tu proyecto</h4>
+                                <p>Crea una instancia de la librería en tu proyecto de Visual FoxPro:</p>
+                                <div class="code-block">
+                                    oWSFEV1 = CREATEOBJECT("FEAFIP.WSFEV1")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Configurar CUIT y URLs</h4>
+                                <p>Configura el CUIT del vendedor y las URLs de los Web Services:</p>
+                                <div class="code-block">
+                                    oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br>
+                                    oWSFEV1.URL = "https://wswhomo.afip.gov.ar/wsfev1/service.asmx" && URL para testing<br>
+                                    && Para producción usar: "https://servicios1.afip.gov.ar/wsfev1/service.asmx"
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Iniciar sesión</h4>
+                                <p>Realiza el login utilizando los certificados generados:</p>
+                                <div class="code-block">
+                                    IF oWSFEV1.login("certificado.crt", "clave.key", "https://wsaahomo.afip.gov.ar/ws/services/LoginCms")<br>
+                                    &nbsp;&nbsp;? "Login exitoso"<br>
+                                    ELSE<br>
+                                    &nbsp;&nbsp;? "Error de login: " + oWSFEV1.ErrorDesc<br>
+                                    ENDIF
+                                </div>
+                                <p>Para producción, usa la URL: "https://wsaa.afip.gov.ar/ws/services/LoginCms"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="production" class="tab-content">
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Generar certificado de producción</h4>
+                                <p>Sigue los pasos para generar un certificado de producción según lo indicado en la sección "Generación de Certificados".</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Administrador de Certificados Digitales</h4>
+                                <p>Agrega en la web de AFIP, en el Administrador de Relaciones de Clave Fiscal, el "Administrador de Certificados Digitales".</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Subir certificado</h4>
+                                <p>Sube el archivo "pedido" al Administrador de Certificados Digitales y descarga el certificado. El archivo "privada" generado con OpenSSL será la clave.key del proyecto.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Agregar Web Service</h4>
+                                <p>Agrega en el Administrador de Relaciones el Web Service de factura electrónica.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Configurar punto de venta</h4>
+                                <p>Entra al módulo "Regímenes de Facturación y Registración" y agrega un punto de venta de tipo Web Services.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">6</div>
+                            <div class="step-content">
+                                <h4>Cambiar URLs en el código</h4>
+                                <p>Modifica las URLs en tu código para utilizar los servidores de producción:</p>
+                                <div class="code-block">
+                                    oWSFEV1.URL = "https://servicios1.afip.gov.ar/wsfev1/service.asmx"<br>
+                                    && URL de autenticación para producción<br>
+                                    lURLWSAA = "https://wsaa.afip.gov.ar/ws/services/LoginCms"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="documentation" class="library">
+        <div class="container">
+            <h2>Documentación de la Libreria FEARCA_lib</h2>
+            <a href="documentation.html" class="btn-library">Ver documentación</a>
+        </div>
+    </section>
+
+    <section id="examples" class="documentation">
+        <div class="container">
+            <h2>Ejemplos de uso</h2>
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="basic-usage">Uso Básico</button>
+                    <button class="tab-btn" data-tab="batch-invoicing">Facturación por Lotes</button>
+                    <button class="tab-btn" data-tab="advanced">Funciones Avanzadas</button>
+                </div>
+                
+                <div id="basic-usage" class="tab-content active">
+                    <h3>Emisión de Facturas Electrónicas</h3>
+                    <p>A continuación se muestra el proceso básico para emitir una factura electrónica:</p>
+                    
+                    <div class="code-block">
+                        * Crear instancia de la librería<br>
+                        oWSFEV1 = CREATEOBJECT("FEAFIP.WSFEV1")<br><br>
+                        
+                        * Configurar datos básicos<br>
+                        oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br>
+                        oWSFEV1.URL = "https://wswhomo.afip.gov.ar/wsfev1/service.asmx" && URL para testing<br><br>
+                        
+                        * Iniciar sesión con certificados<br>
+                        IF oWSFEV1.login("certificado.crt", "clave.key", "https://wsaahomo.afip.gov.ar/ws/services/LoginCms")<br><br>
+                            
+                        &nbsp;&nbsp;* Recuperar último número de comprobante<br>
+                        &nbsp;&nbsp;nPtoVta = 1 && Punto de venta<br>
+                        &nbsp;&nbsp;nTipoComp = 1 && Tipo de comprobante (1 = Factura A)<br>
+                        &nbsp;&nbsp;nUltimoNumero = 0<br><br>
+                        
+                        &nbsp;&nbsp;IF oWSFEV1.RecuperaLastCMP(nPtoVta, nTipoComp, @nUltimoNumero)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Incrementar número de comprobante<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;nUltimoNumero = nUltimoNumero + 1<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Resetear para nueva factura<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.Reset()<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Agregar factura (ejemplo Factura A)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Parámetros: Concepto, TipoDoc, NroDoc, TipoComp, PtoVta, NroComp, FechaComp,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* ImporteNeto, ImporteTotal, Importe_Exento, FechaVencimiento, FechaServDesde, FechaServHasta, Moneda, Cotizacion<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AgregaFactura(1, 80, 30707219072, 1, nPtoVta, nUltimoNumero, DATE(), 1000, 1210, 0, "", "", "", "PES", 1)<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Agregar IVA (alícuota 21%)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Parámetros: ID (5 = 21%), BaseImp, Importe<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AgregaIVA(5, 1000, 210)<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Autorizar la factura<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;IF oWSFEV1.Autorizar(nPtoVta, nTipoComp)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Obtener el CAE y fecha de vencimiento<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AutorizarRespuesta(0, @cCAE, @cVencimiento, @cResultado, @lReproceso)<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF cResultado = "A"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Factura autorizada con éxito!"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "CAE: " + cCAE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Vencimiento: " + cVencimiento<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error en autorización: " + oWSFEV1.AutorizarRespuestaObs(0)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
+                        &nbsp;&nbsp;ELSE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;? "Error recuperando último número: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;ENDIF<br>
+                        ELSE<br>
+                        &nbsp;&nbsp;? "Error de login: " + oWSFEV1.ErrorDesc<br>
+                        ENDIF
+                    </div>
+                </div>
+                
+                <div id="batch-invoicing" class="tab-content">
+                    <h3>Facturación por Lotes</h3>
+                    <p>La facturación por lotes permite procesar múltiples facturas en una sola operación, optimizando el rendimiento:</p>
+                    
+                    <div class="code-block">
+                        * Crear instancia de la librería<br>
+                        oWSFEV1 = CREATEOBJECT("FEAFIP.WSFEV1")<br><br>
+                        
+                        * Configurar datos básicos<br>
+                        oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br>
+                        oWSFEV1.URL = "https://wswhomo.afip.gov.ar/wsfev1/service.asmx" && URL para testing<br><br>
+                        
+                        * Iniciar sesión con certificados<br>
+                        IF oWSFEV1.login("certificado.crt", "clave.key", "https://wsaahomo.afip.gov.ar/ws/services/LoginCms")<br><br>
+                            
+                        &nbsp;&nbsp;* Recuperar último número de comprobante<br>
+                        &nbsp;&nbsp;nPtoVta = 1 && Punto de venta<br>
+                        &nbsp;&nbsp;nTipoComp = 1 && Tipo de comprobante (1 = Factura A)<br>
+                        &nbsp;&nbsp;nUltimoNumero = 0<br>
+                        &nbsp;&nbsp;nCantidadComprobantes = 5 && Cantidad de facturas a procesar<br><br>
+                        
+                        &nbsp;&nbsp;IF oWSFEV1.RecuperaLastCMP(nPtoVta, nTipoComp, @nUltimoNumero)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Resetear para nueva factura<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.Reset()<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Agregar facturas (ejemplo Factura A)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Parámetros: Concepto, TipoDoc, NroDoc, TipoComp, PtoVta, NroComp, FechaComp,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* ImporteNeto, ImporteTotal, Importe_Exento, FechaVencimiento, FechaServDesde, FechaServHasta, Moneda, Cotizacion<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AgregaFactura(1, 80, 30707219072, 1, nPtoVta, nUltimoNumero, DATE(), 1000, 1210, 0, "", "", "", "PES", 1)<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Agregar IVA (alícuota 21%)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Parámetros: ID (5 = 21%), BaseImp, Importe<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AgregaIVA(5, 1000, 210)<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Autorizar facturas<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;IF oWSFEV1.Autorizar(nPtoVta, nTipoComp)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Obtener CAE y fecha de vencimiento<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AutorizarRespuesta(0, @cCAE, @cVencimiento, @cResultado, @lReproceso)<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF cResultado = "A"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Facturas autorizadas con éxito!"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "CAE: " + cCAE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Vencimiento: " + cVencimiento<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error en autorización: " + oWSFEV1.AutorizarRespuestaObs(0)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
+                        &nbsp;&nbsp;ELSE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;? "Error recuperando último número: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;ENDIF<br>
+                        ELSE<br>
+                        &nbsp;&nbsp;? "Error de login: " + oWSFEV1.ErrorDesc<br>
+                        ENDIF
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>Copyright &copy; 2025 Factor Code Lab. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
+            

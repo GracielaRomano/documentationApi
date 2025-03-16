@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de la Libreria FEARCA_lib</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/main.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Favicon y Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/icon/android-chrome-512x512.png">
+    <link rel="shortcut icon" href="/assets/icon/favicon.ico">
+
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="menu-icon">
+                <img src="/assets/icon/favicon-32x32.png" alt="Logo de ARCA Librería">
+                <a href="#" class="logo">ARCA Librería</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Características</a></li>
+                    <li><a href="#getting-started">Comenzar</a></li>
+                    <li><a href="#documentation">Documentación</a></li>
+                    <li><a href="#examples">Ejemplos</a></li>
+                    <li><a href="#troubleshooting">Solución de Problemas</a></li>
+                </ul>
+            </nav>
+            <div class="nav-buttons">
+                <a href="https://apiworks.online/" class="btn-nav">
+                    Acceder
+                    <i class="fas fa-arrow-right"></i>
+                    
+                </a>
+            </div>
+        </div>
+    </header>
+    <section class="hero-library">
+        <div class="container">
+            <h1>Libreria FEARCA_lib</h1>
+            <p>Documentacion en la que encontraras el paso a paso para implementar la libreria FEARCA_lib.</p>
+            <p>Simplificando la vida de los desarrolladores de Visual FoxPro.</p>
+            
+        </div>
+    </section>
+    <main class="container">
+        <div class="header-library">
+            <h1>WSFEV1</h1>
+            <div class="nav-buttons">
+                <a href="index.html" class="btn-nav">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+        <div class="documentation-container">
+            <aside class="sidebar">
+                <section id="indice">
+                    <h2>Índice de Métodos</h2>
+                    <ul>
+                        <li><a href="#introduccion">Introducción</a></li>
+                        <li><a href="#propiedades">Propiedades</a></li>
+                        <li><a href="#metodos">Métodos</a>
+                            <ul>
+                                <li><a href="#cotizacion">Cotización</a></li>
+                                <li><a href="#login">Login</a></li>
+                                <li><a href="#agregafactura">AgregaFactura</a></li>
+                                <li><a href="#agregaiva">AgregaIVA</a></li>
+                                <li><a href="#agregatributo">AgregaTributo</a></li>
+                                <li><a href="#autorizar">Autorizar</a></li>
+                                <li><a href="#recuperalastcmp">RecuperaLastCMP</a></li>
+                                <li><a href="#autorizarrespuesta">AutorizarRespuesta</a></li>
+                                <li><a href="#reset">Reset</a></li>
+                                <li><a href="#caeasolicitar">CAEASolicitar</a></li>
+                                <li><a href="#autorizarrespuestaobs">AutorizarRespuestaObs</a></li>
+                                <li><a href="#cmpconsultar">CmpConsultar</a></li>
+                                <li><a href="#dummy">Dummy</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+
+            <div class="content">
+                <section id="introduccion">
+                    <h2>Introducción</h2>
+                    <p>Interfaz que implementa el Web Service de Facturación Electrónica (WSFE) de ARCA, permitiendo la autorización de comprobantes fiscales A, B y C para el régimen general. Esta interfaz sigue las especificaciones técnicas detalladas en el manual "manual-wsfe-ARCA-COMPG-v4-0.pdf".</p>
+                    <p><em>Nota:</em> Este servicio no incluye el envío de detalles de artículos en los comprobantes.</p>
+                </section>
+
+                <section id="propiedades">
+                    <h2 class="content-title">Propiedades</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo de dato</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ErrorCode</td>
+                                <td>Integer</td>
+                                <td>Código de error de la última operación:<br>
+                                    • <strong>ErrorCode</strong> = 0: Operación exitosa<br>
+                                    • <strong>ErrorCode</strong> = -1: Error local<br>
+                                    • <strong>ErrorCode</strong> > 0: Error de ARCA</td>
+                            </tr>
+                            <tr>
+                                <td>ErrorDesc</td>
+                                <td>String</td>
+                                <td>Descripción del error:<br>
+                                    • Si <strong>ErrorCode</strong> = 0, <strong>ErrorDesc</strong> = ""<br>
+                                    • Si <strong>ErrorCode</strong> > 0, contiene el mensaje de error de ARCA</td>
+                            </tr>
+                            <tr>
+                                <td>URL</td>
+                                <td>String</td>
+                                <td>URL del servicio de autenticación</td>
+                            </tr>
+                            <tr>
+                                <td>CUIT</td>
+                                <td>Double</td>
+                                <td>CUIT del emisor del comprobante</td>
+                            </tr>
+                            <tr>
+                                <td>XMLRequest</td>
+                                <td>String</td>
+                                <td><em>(no implementado)</em> Contenido XML del mensaje enviado a ARCA</td>
+                            </tr>
+                            <tr>
+                                <td>XMLResponse</td>
+                                <td>String</td>
+                                <td><em>(no implementado)</em> Contenido XML de la respuesta de ARCA</td>
+                            </tr>
+                            <tr>
+                                <td>SFLastCMP</td>
+                                <td>Integer</td>
+                                <td>Último comprobante autorizado, obtenido con <strong>SFRecuperaLastCMP</strong></td>
+                            </tr>
+                            <tr>
+                                <td>SFCAE</td>
+                                <td>String</td>
+                                <td>CAE obtenido tras ejecutar <strong>Autorizar</strong></td>
+                            </tr>
+                            <tr>
+                                <td>SFVencimiento</td>
+                                <td>String</td>
+                                <td>Fecha de vencimiento del CAE en formato <strong>AAAAMMDD</strong></td>
+                            </tr>
+                            <tr>
+                                <td>SFResultado</td>
+                                <td>String</td>
+                                <td>Resultado de la autorización:<br>
+                                    <strong>A</strong> = APROBADO<br>
+                                    <strong>R</strong> = RECHAZADO<br>
+                                    <strong>P</strong> = PARCIAL<br>
+                                    El estado parcial aplica en autorizaciones de lotes</td>
+                            </tr>
+                            <tr>
+                                <td>SFCmpConsultarCAE</td>
+                                <td>String</td>
+                                <td>CAE obtenido con <strong>SFCmpConsultar</strong></td>
+                            </tr>
+                            <tr>
+                                <td>SFCmpConsultarVencimiento</td>
+                                <td>String</td>
+                                <td>Vencimiento del CAE obtenido con <strong>SFCmpConsultar</strong></td>
+                            </tr>
+                            <tr>
+                                <td>CmpConsultarCbte</td>
+                                <td>Cbte</td>
+                                <td>Objeto <strong>Cbte</strong> con la información del comprobante consultado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="metodos">
+                    <h2 class="content-title">Métodos</h2>
+                    
+                    <div id="cotizacion" class="metodo">
+                        <h3>Cotización</h3>
+                        <p><strong>Descripción:</strong> Obtiene la cotización de la moneda</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">MonId (String): Código de moneda</li>
+                            <li class="li-library">Fch (String): Fecha de cotización (aaaammdd)</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Double</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.Cotizacion('PES', '20250315')</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="login" class="metodo">
+                        <h3>Login</h3>
+                        <p><strong>Descripción:</strong> Autentica al usuario en el sistema de ARCA. (Opcional)</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">Certificado (String): Archivo certificado (.crt)</li>
+                            <li class="li-library">ClavePrivada (String): Archivo de clave privada (.crt)</li>
+                            <li class="li-library">URL (String): URL del servicio de autenticación</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.Login('certificado.crt', 'claveprivada.crt', 'https://authserver.arca.com.ar/wsfe/login')</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="agregafactura" class="metodo">
+                        <h3>AgregaFactura</h3>
+                        <p><strong>Descripción:</strong> Configura los parámetros principales de un comprobante</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">Concepto (Integer): Tipo de concepto (1:productos, 2:servicios, 3:mixto, 4:otros)</li>
+                            <li class="li-library">DocTipo (Integer): Tipo de documento del cliente</li>
+                            <li class="li-library">DocNro (Integer): Número de documento</li>
+                            <li class="li-library">Cbtedesde (Integer): Número inicial del comprobante</li>
+                            <li class="li-library">Cbtehasta (Integer): Número final del comprobante</li>
+                            <li class="li-library">CbteFch (String): Fecha del comprobante (aaaammdd)</li>
+                            <li class="li-library">Imptotal (Double): Importe total</li>
+                            <li class="li-library">ImpTotalConc (Double): Total no gravado</li>
+                            <li class="li-library">ImpNeto (Double): Neto gravado</li>
+                            <li class="li-library">ImpOpEx (Double): Monto exento</li>
+                            <li class="li-library">FechaServDesde (String): Inicio del servicio (solo servicios)</li>
+                            <li class="li-library">FechaServHasta (String): Fin del servicio (solo servicios)</li>
+                            <li class="li-library">FechaVencPago (String): Vencimiento del pago (solo servicios)</li>
+                            <li class="li-library">MonId (String): Código de moneda</li>
+                            <li class="li-library">MonCotiz (Double): Cotización de la moneda</li>
+                            <li class="li-library">CanMisMonExt (String): Si se cancela con la misma moneda del comprobante (S/N)</li>
+                            <li class="li-library">CondicionDeIva (Integer): Condición de IVA del Receptor</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.AgregaFactura(1, 1, 1, 1, 1, '20250315', 100, 0, 100, 0, '', '', '', 'PES', 1, 'S', 0)</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="agregaiva" class="metodo">
+                        <h3>AgregaIVA</h3>
+                        <p><strong>Descripción:</strong> Agrega detalles de IVA al comprobante</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">Id (Integer): Código de IVA</li>
+                            <li class="li-library">BaseImp (Double): Base imponible</li>
+                            <li class="li-library">Importe (Double): Monto de IVA (BaseImp * alicuota / 100)</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.AgregaIVA(1, 100, 21)</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="agregatributo" class="metodo">
+                        <h3>AgregaTributo</h3>
+                        <p><strong>Descripción:</strong> Agrega detalles de otros tributos</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">Id (Integer): Código de tributo</li>
+                            <li class="li-library">Desc (String): Descripción</li>
+                            <li class="li-library">BaseImp (Double): Base imponible</li>
+                            <li class="li-library">Alic (Double): Alicuota</li>
+                            <li class="li-library">Importe (Double): Monto del tributo (BaseImp * Alic / 100)</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.AgregaTributo(1, 'Tributo de prueba', 100, 21, 21)</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="autorizar" class="metodo">
+                        <h3>Autorizar</h3>
+                        <p><strong>Descripción:</strong> Envía el comprobante a ARCA para su autorización</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">ptoVenta (Integer): Punto de Venta</li>
+                            <li class="li-library">CbteTipo (Integer): Tipo de comprobante</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.Autorizar(1, 1)</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="recuperalastcmp" class="metodo">
+                        <h3>RecuperaLastCMP</h3>
+                        <p><strong>Descripción:</strong> Obtiene el último comprobante autorizado</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">PtoVta (Integer): Punto de Venta</li>
+                            <li class="li-library">TipoComp (Integer): Tipo de comprobante</li>
+                            <li class="li-library">cmp (Double): Número del último comprobante</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.RecuperaLastCMP(1, 1, 1)</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="autorizarrespuesta" class="metodo">
+                        <h3>AutorizarRespuesta</h3>
+                        <p><strong>Descripción:</strong> Recupera la respuesta de una autorización</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">Indice (Integer): Índice del comprobante (0 si es único)</li>
+                            <li class="li-library">CAE (String): Código de Autorización Electrónica</li>
+                            <li class="li-library">Vencimiento (String): Vencimiento del CAE</li>
+                            <li class="li-library">Resultado (String): A=APROBADO, R=RECHAZADO, C=APROBADO PARCIALMENTE</li>
+                            <li class="li-library">Reproceso (String): S=SI, N=NO (indica si ya fue autorizado)</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.AutorizarRespuesta(0, '1234567890', '20250315', 'A', 'N')</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="reset" class="metodo">
+                        <h3>Reset</h3>
+                        <p><strong>Descripción:</strong> Reinicia las variables internas. Debe ejecutarse al inicio de cada proceso de autorización.</p>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.Reset()</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="caeasolicitar" class="metodo">
+                        <h3>CAEASolicitar</h3>
+                        <p><strong>Descripción:</strong> Solicita un CAE Anticipado a ARCA</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">Periodo (String): Periodo del CAEA (aaaamm)</li>
+                            <li class="li-library">Orden (String): Quincena 1 o 2</li>
+                            <li class="li-library">CAE (String): CAE anticipado</li>
+                            <li class="li-library">FchVigDesde (String): Inicio de vigencia (aaaammdd)</li>
+                            <li class="li-library">FchVigHasta (String): Fin de vigencia (aaaammdd)</li>
+                            <li class="li-library">FchTopeInf (String): Fecha límite para informar comprobantes</li>
+                            <li class="li-library">FchProceso (String): Fecha de proceso (yyyymmddhhmiss)</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>loWSFE.CAEASolicitar('202503', '1', '1234567890', '20250315', '20250331', '20250315', '20250331')</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="autorizarrespuestaobs" class="metodo">
+                        <h3>AutorizarRespuestaObs</h3>
+                        <p><strong>Descripción:</strong> Recupera observaciones del comprobante</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">Indice (Integer): Índice del comprobante en lote</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> String</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>lcResult = loWSFE.AutorizarRespuestaObs(0)
+? lcResult</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="cmpconsultar" class="metodo">
+                        <h3>CmpConsultar</h3>
+                        <p><strong>Descripción:</strong> Consulta un comprobante autorizado</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">Tipo_cbte (Integer): Tipo de comprobante</li>
+                            <li class="li-library">Punto_vta (Integer): Punto de venta</li>
+                            <li class="li-library">cbt_nro (Double): Número de comprobante</li>
+                            <li class="li-library">Cae (String): CAE</li>
+                            <li class="li-library">Vencimiento (String): Vencimiento</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> Boolean</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>IF loWSFE.CmpConsultar(1, 1, 1, '1234567890', '20250315')
+    ? 'Comprobante consultado exitosamente'
+ELSE
+    ? 'Error al consultar el comprobante'
+ENDIF</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="dummy" class="metodo">
+                        <h3>Dummy</h3>
+                        <p><strong>Descripción:</strong> Verifica el estado de los servicios de ARCA</p>
+                        <p><strong>Parámetros:</strong></p>
+                        <ul>
+                            <li class="li-library">appserver (String): Estado del servicio de negocio</li>
+                            <li class="li-library">authserver (Integer): Estado del servicio de autenticación</li>
+                            <li class="li-library">dbserver (Double): Estado de la base de datos</li>
+                        </ul>
+                        <p><strong>Resultado:</strong> String</p>
+                        <div class="ejemplo">
+                            <h4>Ejemplo:</h4>
+                            <pre><code>lcResult = loWSFE.Dummy()
+? lcResult</code></pre>
+                        </div>
+                    </div>
+                    
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Copyright &copy; 2025 Factor Code Lab. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
