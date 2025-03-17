@@ -209,6 +209,7 @@ nav ul li a:hover {
     padding: 4rem 0;
     background-color: var(--light);
     text-align: center;
+    margin-bottom: 4rem;
 }
 .library h2 {
     color: var(--primary);
@@ -226,6 +227,13 @@ nav ul li a:hover {
     height: 3px;
     background-color: var(--primary);
     transform: translateX(-50%);
+}
+
+.space {
+    margin-bottom: 5rem;
+}
+.space2 {
+    margin-top: 10rem;
 }
 .documentation {
     padding: 4rem 0;

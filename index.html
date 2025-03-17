@@ -31,7 +31,7 @@
                     <li><a href="#getting-started">Comenzar</a></li>
                     <li><a href="#documentation">Documentación</a></li>
                     <li><a href="#examples">Ejemplos</a></li>
-                    <li><a href="#troubleshooting">Solución de Problemas</a></li>
+                    <!--<li><a href="#troubleshooting">Solución de Problemas</a></li>-->
                 </ul>
             </nav>
             <div class="nav-buttons">
@@ -104,15 +104,18 @@
                             <div class="step-content">
                                 <h4>Descarga la librería</h4>
                                 <p>Descarga la última versión de la librería desde nuestra página de descargas.</p>
+                                <a href="/descargas/fearcalib.rar" class="btn-download">Descargar
+                                    <i class="fas fa-download"></i>
+                                </a>
                             </div>
                         </div>
                         <div class="step">
                             <div class="step-number">2</div>
                             <div class="step-content">
-                                <h4>Registra la librería DLL</h4>
-                                <p>Ejecuta el archivo registrar.exe como administrador para registrar la librería en el sistema.</p>
+                                <h4>Descargar el .app</h4>
+                                <p>Descomprime el archivo fearcalib.rar y copia el archivo fearcalib.app en el directorio de tu proyecto.</p>
                                 <div class="code-block">
-                                    registrar.exe
+                                    fearcalib.app
                                 </div>
                             </div>
                         </div>
@@ -122,7 +125,7 @@
                                 <h4>Verifica la instalación</h4>
                                 <p>Comprueba que la instalación ha sido exitosa mediante el siguiente código en Visual FoxPro:</p>
                                 <div class="code-block">
-                                    oWSFEV1 = CREATEOBJECT("FEAFIP.WSFEV1")<br>
+                                    oWSFEV1 = NEWOBJECT("FeArcaLib","FeArcaLib.APP")<br>
                                     IF TYPE("oWSFEV1") = "O"<br>
                                     &nbsp;&nbsp;? "Instalación exitosa"<br>
                                     ELSE<br>
@@ -197,35 +200,44 @@
                                 <h4>Incorporar la librería en tu proyecto</h4>
                                 <p>Crea una instancia de la librería en tu proyecto de Visual FoxPro:</p>
                                 <div class="code-block">
-                                    oWSFEV1 = CREATEOBJECT("FEAFIP.WSFEV1")
+                                    oWSFEV1 = NEWOBJECT("FeARCALib","FeARCALib.app")
                                 </div>
                             </div>
                         </div>
                         <div class="step">
                             <div class="step-number">2</div>
                             <div class="step-content">
-                                <h4>Configurar CUIT y URLs</h4>
-                                <p>Configura el CUIT del vendedor y las URLs de los Web Services:</p>
+                                <h4>Configurar CUIT, Token y Ambiente </h4>
+                                <p>Configura el CUIT del vendedor, el Token del programador y el ambiente del Web Services:</p>
                                 <div class="code-block">
-                                    oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br>
-                                    oWSFEV1.URL = "https://wswhomo.afip.gov.ar/wsfev1/service.asmx" && URL para testing<br>
-                                    && Para producción usar: "https://servicios1.afip.gov.ar/wsfev1/service.asmx"
+                                    oWSFEV1.CUIT = 20939802593 && CUIT del vendedor <br>
+                                    oWSFEV1.UUID = 'a4b87573-919c-4bb7-805c-55aea717023c' &&Identificacion del programador. <br>
+                                    oWSFEV1.Ambiente = 'HOMOLOGACION' && 'PRODUCCION'
                                 </div>
                             </div>
                         </div>
                         <div class="step">
                             <div class="step-number">3</div>
                             <div class="step-content">
-                                <h4>Iniciar sesión</h4>
+                                <h4>Consumir servicios</h4>
                                 <p>Realiza el login utilizando los certificados generados:</p>
                                 <div class="code-block">
-                                    IF oWSFEV1.login("certificado.crt", "clave.key", "https://wsaahomo.afip.gov.ar/ws/services/LoginCms")<br>
-                                    &nbsp;&nbsp;? "Login exitoso"<br>
+                                    MonId = "DOL"<br>
+                                    Fecha = DATE()-1<br>
+
+                                    IF NOT oWSFEV1.Cotizacion(MonId, Fecha) THEN<br>
+                                    &nbsp;&nbsp; MESSAGEBOX(oWSFEV1.ErrorDesc)<br>
                                     ELSE<br>
-                                    &nbsp;&nbsp;? "Error de login: " + oWSFEV1.ErrorDesc<br>
+                                    &nbsp;&nbsp; lnCotizacion = oWSFEV1.MonCotiz &&Devolucion el ultimo comprobante<br>
+
+                                    &nbsp;&nbsp; MESSAGEBOX('Cotización de Moneda: '+TRANSFORM(MonId)+ CHR(13)+;<br>
+                                    &nbsp;&nbsp; 'a la Fecha: '+TRANSFORM(Fecha)+ CHR(13)+;<br>
+                                    &nbsp;&nbsp; ' ' +TRANSFORM(lnCotizacion) ,<br>
+                                    &nbsp;&nbsp; 64,'Resultado del estado de Servidores de ARCA')<br>
                                     ENDIF
                                 </div>
-                                <p>Para producción, usa la URL: "https://wsaa.afip.gov.ar/ws/services/LoginCms"</p>
+                                <p>Para producción, solo basta con cambiar:<br>
+                                    oWSFEV1.Ambiente = 'PRODUCCION'</p>
                             </div>
                         </div>
                     </div>
@@ -244,7 +256,7 @@
                             <div class="step-number">2</div>
                             <div class="step-content">
                                 <h4>Administrador de Certificados Digitales</h4>
-                                <p>Agrega en la web de AFIP, en el Administrador de Relaciones de Clave Fiscal, el "Administrador de Certificados Digitales".</p>
+                                <p>Agrega en la web de ARCA, en el Administrador de Relaciones de Clave Fiscal, el "Administrador de Certificados Digitales".</p>
                             </div>
                         </div>
                         <div class="step">
@@ -268,18 +280,6 @@
                                 <p>Entra al módulo "Regímenes de Facturación y Registración" y agrega un punto de venta de tipo Web Services.</p>
                             </div>
                         </div>
-                        <div class="step">
-                            <div class="step-number">6</div>
-                            <div class="step-content">
-                                <h4>Cambiar URLs en el código</h4>
-                                <p>Modifica las URLs en tu código para utilizar los servidores de producción:</p>
-                                <div class="code-block">
-                                    oWSFEV1.URL = "https://servicios1.afip.gov.ar/wsfev1/service.asmx"<br>
-                                    && URL de autenticación para producción<br>
-                                    lURLWSAA = "https://wsaa.afip.gov.ar/ws/services/LoginCms"
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -287,12 +287,15 @@
     </section>
 
     <section id="documentation" class="library">
+        
         <div class="container">
+            <div class="space2"></div>
             <h2>Documentación de la Libreria FEARCA_lib</h2>
             <a href="documentation.html" class="btn-library">Ver documentación
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
+        <div class="space"></div>
     </section>
 
     <section id="examples" class="documentation">
@@ -302,7 +305,7 @@
                 <div class="tab-buttons">
                     <button class="tab-btn active" data-tab="basic-usage">Uso Básico</button>
                     <button class="tab-btn" data-tab="batch-invoicing">Facturación por Lotes</button>
-                    <button class="tab-btn" data-tab="advanced">Funciones Avanzadas</button>
+                    <button class="tab-btn" data-tab="advanced">Cotización en Moneda Extranjera</button>
                 </div>
                 
                 <div id="basic-usage" class="tab-content active">
@@ -311,56 +314,52 @@
                     
                     <div class="code-block">
                         * Crear instancia de la librería<br>
-                        oWSFEV1 = CREATEOBJECT("FEAFIP.WSFEV1")<br><br>
+                        oWSFEV1 = NEWOBJECT("FeArcaLib","FeArcaLib.APP")<br>
+                        oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br><br>
                         
-                        * Configurar datos básicos<br>
-                        oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br>
-                        oWSFEV1.URL = "https://wswhomo.afip.gov.ar/wsfev1/service.asmx" && URL para testing<br><br>
+                        * Propiedades fearcalib<br>    
+                        oWSFEV1.UUID = 'a4b87573-919c-4bb7-805c-55aea717023c' &&Identificacion del programador.<br>
+                        oWSFEV1.Ambiente = 'HOMOLOGACION' && 'PRODUCCION'<br><br>
                         
-                        * Iniciar sesión con certificados<br>
-                        IF oWSFEV1.login("certificado.crt", "clave.key", "https://wsaahomo.afip.gov.ar/ws/services/LoginCms")<br><br>
-                            
-                        &nbsp;&nbsp;* Recuperar último número de comprobante<br>
-                        &nbsp;&nbsp;nPtoVta = 1 && Punto de venta<br>
-                        &nbsp;&nbsp;nTipoComp = 1 && Tipo de comprobante (1 = Factura A)<br>
-                        &nbsp;&nbsp;nUltimoNumero = 0<br><br>
+                        * Recuperar último número de comprobante
+                        nPtoVta = 1 && Punto de venta<br>
+                        nTipoComp = 1 && Tipo de comprobante (1 = Factura A)<br>
+                        nUltimoNumero = 0<br><br>
                         
-                        &nbsp;&nbsp;IF oWSFEV1.RecuperaLastCMP(nPtoVta, nTipoComp, @nUltimoNumero)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Incrementar número de comprobante<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;nUltimoNumero = nUltimoNumero + 1<br><br>
+                        IF oWSFEV1.RecuperaLastCMP(nPtoVta, nTipoComp, @nUltimoNumero)<br>
+                            &nbsp;&nbsp;nUltimoNumero = nUltimoNumero + 1 &&Incrementar número de comprobante<br>
+
+                        &nbsp;&nbsp;oWSFEV1.RESET() &&Resetear PARA nueva factura<br><br>
+
+                        &nbsp;&nbsp;* Agregar factura (ejemplo factura A)<br>
+                        &nbsp;&nbsp;* Parámetros: Concepto, TipoDoc, NroDoc, TipoComp, PtoVta, NroComp, FechaComp,<br>
+                        &nbsp;&nbsp;* ImporteNeto, ImporteTotal, Importe_Exento, FechaVencimiento, FechaServDesde, FechaServHasta, Moneda, Cotizacion,<br>
+                        &nbsp;&nbsp;* CanMisMonEx, CondicionDeIva <br>
+                        &nbsp;&nbsp;oWSFEV1.AgregaFactura(1, 80, 30707219072, 1, nPtoVta, nUltimoNumero, DATE(),;
+                        &nbsp;&nbsp;1000, 1210, 0, "", "", "", "PES", 1,;
+                        &nbsp;&nbsp;.F., 1)<br><br>
                         
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Resetear para nueva factura<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.Reset()<br><br>
+                        &nbsp;&nbsp;* Agregar IVA (alícuota 21%)<br>
+                        &nbsp;&nbsp;* Parámetros: ID (5 = 21%), BaseImp, Importe<br>
+                        &nbsp;&nbsp;oWSFEV1.AgregaIVA(5, 1000, 210)<br><br>
                         
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Agregar factura (ejemplo Factura A)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Parámetros: Concepto, TipoDoc, NroDoc, TipoComp, PtoVta, NroComp, FechaComp,<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;* ImporteNeto, ImporteTotal, Importe_Exento, FechaVencimiento, FechaServDesde, FechaServHasta, Moneda, Cotizacion<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AgregaFactura(1, 80, 30707219072, 1, nPtoVta, nUltimoNumero, DATE(), 1000, 1210, 0, "", "", "", "PES", 1)<br><br>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Agregar IVA (alícuota 21%)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Parámetros: ID (5 = 21%), BaseImp, Importe<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AgregaIVA(5, 1000, 210)<br><br>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Autorizar la factura<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;IF oWSFEV1.Autorizar(nPtoVta, nTipoComp)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Obtener el CAE y fecha de vencimiento<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AutorizarRespuesta(0, @cCAE, @cVencimiento, @cResultado, @lReproceso)<br><br>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF cResultado = "A"<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Factura autorizada con éxito!"<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "CAE: " + cCAE<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Vencimiento: " + cVencimiento<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error en autorización: " + oWSFEV1.AutorizarRespuestaObs(0)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
+                        &nbsp;&nbsp;* Autorizar la factura<br>  
+                        &nbsp;&nbsp;IF oWSFEV1.Autorizar(nPtoVta, nTipoComp)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Obtener el CAE Y fecha de vencimiento<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AutorizarRespuesta(0, @cCAE, @cVencimiento, @cResultado, @lReproceso)<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;IF cResultado = "A"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Factura autorizada con éxito!"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "CAE: " + cCAE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Vencimiento: " + cVencimiento<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error en autorización: " + oWSFEV1.AutorizarRespuestaObs(0)<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
                         &nbsp;&nbsp;ELSE<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;? "Error recuperando último número: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;? "Error: " + oWSFEV1.ErrorDesc<br>
                         &nbsp;&nbsp;ENDIF<br>
                         ELSE<br>
-                        &nbsp;&nbsp;? "Error de login: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;? "Error recuperando último número: " + oWSFEV1.ErrorDesc<br>
                         ENDIF
                     </div>
                 </div>
@@ -371,54 +370,78 @@
                     
                     <div class="code-block">
                         * Crear instancia de la librería<br>
-                        oWSFEV1 = CREATEOBJECT("FEAFIP.WSFEV1")<br><br>
+                        oWSFEV1 = NEWOBJECT("FeArcaLib","FeArcaLib.APP")<br>
+                        oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br><br>
                         
-                        * Configurar datos básicos<br>
-                        oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br>
-                        oWSFEV1.URL = "https://wswhomo.afip.gov.ar/wsfev1/service.asmx" && URL para testing<br><br>
+                        *- Propiedades fearcalib<br>    
+                        oWSFEV1.UUID = 'a4b87573-919c-4bb7-805c-55aea717023c' &&Identificacion del programador.<br>
+                        oWSFEV1.Ambiente = 'HOMOLOGACION' && 'PRODUCCION'<br><br>
                         
-                        * Iniciar sesión con certificados<br>
-                        IF oWSFEV1.login("certificado.crt", "clave.key", "https://wsaahomo.afip.gov.ar/ws/services/LoginCms")<br><br>
+                        * Recuperar último número de comprobante
+                        nPtoVta = 1 && Punto de venta<br>
+                        nTipoComp = 1 && Tipo de comprobante (1 = Factura A)<br>
+                        nUltimoNumero = 0<br>
+                        nCantidadComprobantes = 5 && Cantidad de facturas a procesar<br><br>
+
+                        IF oWSFEV1.RecuperaLastCMP(nPtoVta, nTipoComp, @nUltimoNumero)<br>
+                        &nbsp;&nbsp;oWSFEV1.RESET()  && Resetear PARA nueva factura<br><br>
                             
-                        &nbsp;&nbsp;* Recuperar último número de comprobante<br>
-                        &nbsp;&nbsp;nPtoVta = 1 && Punto de venta<br>
-                        &nbsp;&nbsp;nTipoComp = 1 && Tipo de comprobante (1 = Factura A)<br>
-                        &nbsp;&nbsp;nUltimoNumero = 0<br>
-                        &nbsp;&nbsp;nCantidadComprobantes = 5 && Cantidad de facturas a procesar<br><br>
+                        &nbsp;&nbsp;* Agregar facturas (ejemplo factura A)<br>  
+                        &nbsp;&nbsp;* Parámetros: Concepto, TipoDoc, NroDoc, TipoComp, PtoVta, NroComp, FechaComp,<br>
+                        &nbsp;&nbsp;* ImporteNeto, ImporteTotal, Importe_Exento, FechaVencimiento, FechaServDesde, FechaServHasta, Moneda, Cotizacion,<br>
+                        &nbsp;&nbsp;* CanMisMonEx, CondicionDeIva <br>
+                        &nbsp;&nbsp;oWSFEV1.AgregaFactura(1, 80, 30707219072, 1, nPtoVta, nUltimoNumero, DATE(),;
+                        &nbsp;&nbsp;1000, 1210, 0, "", "", "", "PES", 1,;
+                        &nbsp;&nbsp;.F., 1)<br><br>
                         
-                        &nbsp;&nbsp;IF oWSFEV1.RecuperaLastCMP(nPtoVta, nTipoComp, @nUltimoNumero)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Resetear para nueva factura<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.Reset()<br><br>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Agregar facturas (ejemplo Factura A)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Parámetros: Concepto, TipoDoc, NroDoc, TipoComp, PtoVta, NroComp, FechaComp,<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;* ImporteNeto, ImporteTotal, Importe_Exento, FechaVencimiento, FechaServDesde, FechaServHasta, Moneda, Cotizacion<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AgregaFactura(1, 80, 30707219072, 1, nPtoVta, nUltimoNumero, DATE(), 1000, 1210, 0, "", "", "", "PES", 1)<br><br>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Agregar IVA (alícuota 21%)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Parámetros: ID (5 = 21%), BaseImp, Importe<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AgregaIVA(5, 1000, 210)<br><br>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;* Autorizar facturas<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;IF oWSFEV1.Autorizar(nPtoVta, nTipoComp)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Obtener CAE y fecha de vencimiento<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AutorizarRespuesta(0, @cCAE, @cVencimiento, @cResultado, @lReproceso)<br><br>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF cResultado = "A"<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Facturas autorizadas con éxito!"<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "CAE: " + cCAE<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Vencimiento: " + cVencimiento<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error en autorización: " + oWSFEV1.AutorizarRespuestaObs(0)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
+                        &nbsp;&nbsp;* Agregar IVA (alícuota 21%)<br>
+                        &nbsp;&nbsp;* Parámetros: ID (5 = 21%), BaseImp, Importe<br>
+                        &nbsp;&nbsp;oWSFEV1.AgregaIVA(5, 1000, 210)<br><br>
+
+                        &nbsp;&nbsp;* Autorizar facturas<br>
+                        &nbsp;&nbsp;IF oWSFEV1.Autorizar(nPtoVta, nTipoComp)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;* Obtener CAE Y fecha de vencimiento<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;oWSFEV1.AutorizarRespuesta(0, @cCAE, @cVencimiento, @cResultado, @lReproceso)<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;IF cResultado = "A"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Facturas autorizadas con éxito!"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "CAE: " + cCAE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Vencimiento: " + cVencimiento<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? "Error en autorización: " + oWSFEV1.AutorizarRespuestaObs(0)<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
                         &nbsp;&nbsp;ELSE<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;? "Error recuperando último número: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;? "Error: " + oWSFEV1.ErrorDesc<br>
                         &nbsp;&nbsp;ENDIF<br>
                         ELSE<br>
-                        &nbsp;&nbsp;? "Error de login: " + oWSFEV1.ErrorDesc<br>
+                        &nbsp;&nbsp;? "Error recuperando último número: " + oWSFEV1.ErrorDesc<br>
+                        ENDIF
+                    </div>
+                </div>
+                <div id="advanced" class="tab-content">
+                    <h3>Cotización en Moneda Extranjera</h3>
+                    <p>La cotización en moneda extranjera permite obtener la cotización de una moneda extranjera en pesos:</p>
+                    <div class="code-block">
+                        * Crear instancia de la librería<br>
+                        oWSFEV1 = NEWOBJECT("FeArcaLib","FeArcaLib.APP")<br>
+                        oWSFEV1.CUIT = 20939802593 && CUIT del vendedor<br><br>
+
+                        * Propiedades fearcalib<br>    
+                        oWSFEV1.UUID = 'a4b87573-919c-4bb7-805c-55aea717023c' &&Identificacion del programador.<br>
+                        oWSFEV1.Ambiente = 'HOMOLOGACION' && 'PRODUCCION'<br><br>
+
+                        MonId = "DOL"<br>
+                        Fecha = DATE()-1<br><br>
+
+                        IF NOT oWSFEV1.Cotizacion(MonId, Fecha) THEN<br>
+                        &nbsp;&nbsp;MESSAGEBOX(oWSFEV1.ErrorDesc)<br>
+                        ELSE<br>
+                        &nbsp;&nbsp;lnCotizacion = oWSFEV1.MonCotiz &&Devolucion el ultimo comprobante<br>
+
+                        &nbsp;&nbsp;MESSAGEBOX('Cotización de Moneda: '+TRANSFORM(MonId)+ CHR(13)+;<br>
+                        &nbsp;&nbsp;'a la Fecha: '+TRANSFORM(Fecha)+ CHR(13)+;<br>
+                        &nbsp;&nbsp;' ' +TRANSFORM(lnCotizacion) ,;<br>
+                        &nbsp;&nbsp;64,'Resultado del estado de Servidores de ARCA')<br>
                         ENDIF
                     </div>
                 </div>
@@ -428,7 +451,7 @@
     
     <footer class="footer">
         <div class="container">
-            <p>Copyright &copy; 2025 Factor Code Lab. Todos los derechos reservados.</p>
+            <p>Copyright &copy; 2025 ApiWorks. Todos los derechos reservados.</p>
         </div>
     </footer>
 </body>
